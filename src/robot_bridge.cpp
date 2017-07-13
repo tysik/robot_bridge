@@ -35,3 +35,38 @@ RobotBridge::~RobotBridge() {
 void RobotBridge::timerCallback(const ros::TimerEvent& e) {
   serial_port_.write("AAA", 3);
 }
+
+void RobotBridge::publishOdom(const Message& msg) {
+  ros::Time now = ros::Time::now();
+  geometry_msgs::Quaternion rotation = tf::createQuaternionMsgFromYaw(0.0);
+
+  geometry_msgs::TransformStamped odom_tf;
+
+  odom_tf.header.stamp = now;
+  odom_tf.header.frame_id = p_odom_frame_id_;
+  odom_tf.child_frame_id = p_robot_frame_id_;
+
+  odom_tf.transform.translation.x = 0.0;
+  odom_tf.transform.translation.y = 0.0;
+  odom_tf.transform.translation.z = 0.0;
+  odom_tf.transform.rotation = rotation;
+
+  tf_bc_.sendTransform(odom_tf);
+
+  nav_msgs::OdometryPtr odom_msg(new nav_msgs::Odometry);
+
+  odom_msg->header.stamp = now;
+  odom_msg->header.frame_id = p_odom_frame_id_;
+  odom_msg->child_frame_id = p_robot_frame_id_;
+
+  odom_msg->pose.pose.position.x = 0.0;
+  odom_msg->pose.pose.position.y = 0.0;
+  odom_msg->pose.pose.position.z = 0.0;
+  odom_msg->pose.pose.orientation = rotation;
+
+  odom_msg->twist.twist.linear.x = 0.0;
+  odom_msg->twist.twist.linear.y = 0.0;
+  odom_msg->twist.twist.angular.z = 0.0;
+
+  odom_pub_.publish(odom_msg);
+}

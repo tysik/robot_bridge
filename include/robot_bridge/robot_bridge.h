@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ros/ros.h>
+#include <tf/tf.h>
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include <nav_msgs/Odometry.h>
@@ -18,16 +19,17 @@ public:
 
 private:
   void timerCallback(const ros::TimerEvent& e);
+  void publishOdom(const Message& msg);
 
   ros::NodeHandle nh_;
   ros::NodeHandle nh_local_;
 
   ros::Timer timer_;
 
+  ros::Publisher odom_pub_;
+
   tf::TransformBroadcaster tf_bc_;
   tf::TransformListener tf_ls_;
-
-  nav_msgs::Odometry odom_;
 
   SerialPort serial_port_;
 
