@@ -1,0 +1,14 @@
+<!-- -->
+<launch>
+
+  <node pkg="robot_bridge" type="robot_bridge_node" name="robot_bridge" output="screen">
+    <param name="port_name" value="/dev/ttyS0"/>
+    <param name="baud_rate" value="115200"/>
+    <param name="flow_control" value="0"/>
+    <param name="parity" value="0"/>
+    <param name="stop_bits" value="1"/>
+    <param name="char_size" value="8"/>
+
+  </node>
+
+</launch>
